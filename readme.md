@@ -7,7 +7,7 @@ Un projet **Spring Boot** réalisé dans le cadre de Tekup.
 ## Charte Graphique
 Voici un aperçu de la charte graphique utilisée dans le projet :
 
-![Charte Graphique](chart.png)
+![Charte Graphique](./chart.PNG)
 
 ---
 
