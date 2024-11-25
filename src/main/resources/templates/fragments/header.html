@@ -1,0 +1,68 @@
+<nav class="navbar navbar-expand-lg sticky-top navbar-light">
+    <div class="container justify-content-between align-items-center">
+      <a class="navbar-brand d-flex" href="#">
+        <img src="/images/logo.png" class="rounded-circle img-fluid " alt="" width="70" height="70" />
+        <h2 class="navbar-brand-text mt-4 ms-4">App Storage</h2>
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#details">Documents</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#services">Notes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#projects">Accounts</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#projects">Jobs</a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link btn btn-outline-secondary px-4 mx-4"
+              href="#contact"
+              >Contact Us</a
+            >
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdownMenuLink"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              My Account
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li class="w-100">
+                <img th:src="${user.picture}" class="ms-5 img-responsive rounded-circle mt-1" width="60" height="60" alt="profile"/>
+              </li>
+              <li><a class="dropdown-item" th:href="@{/me}">Profile</a></li>
+              <li><a class="dropdown-item" th:href="@{/settings}">Settings</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li><a  class="dropdown-item" th:href="@{/auth/logout}">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header -->

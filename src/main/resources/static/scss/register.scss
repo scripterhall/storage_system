@@ -1,0 +1,18 @@
+// Variables pour la personnalisation
+$primary-color: #d7da3b; // Couleur principale
+$secondary-color: #41e1fdd4; // Couleur secondaire
+$border-color: #e1e1e1; // Couleur des bordures
+$card-bg-color: #ffffff; // Couleur de fond de la carte
+$shadow-color: rgba(0, 0, 0, 0.15); // Ombre
+$card-padding: 2rem; // Padding de la carte
+
+// Styles de la page
+body {
+  background: linear-gradient(to right, $primary-color, $secondary-color);
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/register.css">
+</head>
+<body>
+<div class="container  d-flex mt-1">
+    <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded mx-auto">
+        <img src="/images/logo.png" height="100" width="100" class="rounded-circle mx-auto img-fluid" alt="logo" />
+        <div class="card-body justify-content-center">
+            <form th:action="@{/auth/register}" method="post" enctype="multipart/form-data">
+                <!-- Email -->
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                </div>
+        
+                <!-- Nom d'utilisateur -->
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" name="username" class="form-control" required>
+                </div>
+        
+                <!-- Mot de passe -->
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" required>
+                </div>
+        
+                <!-- Prénom -->
+                <div class="mb-3">
+                    <label for="givenName" class="form-label">Given Name</label>
+                    <input type="text" id="givenName" name="givenName" class="form-control">
+                </div>
+        
+                <!-- Nom de famille -->
+                <div class="mb-3">
+                    <label for="familyName" class="form-label">Family Name</label>
+                    <input type="text" id="familyName" name="familyName" class="form-control">
+                </div>
+        
+                <!-- Genre -->
+                <div class="mb-3">
+                    <label for="genre" class="form-label">Genre</label>
+                    <select id="genre" name="genre" class="form-select">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+        
+                <!-- Photo de profil -->
+                <div class="mb-3">
+                    <label for="profilePicture" class="form-label">Profile Picture</label>
+                    <input type="file" id="profilePicture" name="profilePicture" class="form-control" >
+                </div>
+        
+                <!-- Soumettre -->
+                <div class="w-100 mt-3 ms-4">
+                    
+                    <button type="submit" class="btn mb-3 btn-primary mx-auto w-75">Register</button>
+                    <br>
+                    <small>Already have an account? <a href="/auth/login">Login</a></small>
+                </div> 
+            </form>
+            <div th:if="${param.error}" style="color: red;">
+                Error occurred while registering. Please try again.
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
