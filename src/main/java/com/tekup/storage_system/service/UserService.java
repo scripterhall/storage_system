@@ -28,6 +28,7 @@ public class UserService {
     private final AuthorityRepository authorityRepository;
     private static final String UPLOAD_DIR = "src/main/resources/static/pictures/";
 
+    /** mvc handlers */
     public User registerUser(User user, MultipartFile profilePicture) throws IOException {
         // Vérifiez si le répertoire d'upload existe, sinon créez-le
         File uploadDir = new File(UPLOAD_DIR);
@@ -108,4 +109,9 @@ public class UserService {
         return false;
 
     }
+
+    /**
+     * rest api handlers
+     */
+
 }
