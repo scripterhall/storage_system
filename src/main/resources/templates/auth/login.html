@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+        
+        <img src="https://www.cnet.com/a/img/resize/bc0e5c44718a077a12dfb89fb5a9bf2e6b2bd370/hub/2021/04/15/59a868f1-50fa-4f8f-9b02-516d7dcdb2db/004-box-google-drive-onedrive-dropbox-cloud-storage-apps-cnet-2021.jpg?auto=webp&fit=crop&height=675&width=1200" class="card-img" alt="Card Image">
+        <div class="card-body">
+            <h5 class="card-title text-center">Welcome Back!</h5>
+            <p class="card-text text-center">Sign in to your account to continue and access all features.</p>
+        
+            <!-- Bouton "Sign in with Google" -->
+            <div class="d-grid mb-3">
+                <a href="/oauth2/authorization/google" class="btn btn-outline-warning d-flex align-items-center justify-content-center">
+                    <i class="fab fa-google me-2"></i> Sign in with Google
+                </a>
+            </div>
+        
+        
+            <!-- Formulaire d'authentification -->
+            <form th:action="@{/auth/login}" method="post" class="needs-validation mb-3" novalidate>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Enter your username" required>
+                    <div class="invalid-feedback">Please enter your username.</div>
+                </div>
+        
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+                    <div class="invalid-feedback">Please enter your password.</div>
+                </div>
+                <br>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </form>
+
+               <!-- Message d'erreur -->
+    <div th:if="${param.error}" class="mt-4 alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Erreur :</strong> Bad Credentials. Try again!
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Message de déconnexion -->
+    <div th:if="${param.logout}" class="mt-4 alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Succès :</strong> Disconnected successfully.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Message d'inscription réussie -->
+    <div th:if="${param.inscrit}" class="mt-4 alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Succès :</strong> Your registration has been successfully created.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+        
+            <!-- Lien pour l'inscription -->
+            <div class="text-center mt-3">
+                <p class="small">Don't have an account? <a th:href="@{/auth/register}" class="text-primary">Register here</a>.</p>
+            </div>
+        </div>
+        
+    </div>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

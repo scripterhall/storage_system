@@ -1,0 +1,58 @@
+// Variables pour la personnalisation
+$primary-color: #d7da3b; // Couleur principale
+$secondary-color: #41e1fdd4; // Couleur secondaire
+$border-color: #e1e1e1; // Couleur des bordures
+$card-bg-color: #ffffff; // Couleur de fond de la carte
+$shadow-color: rgba(0, 0, 0, 0.15); // Ombre
+$card-padding: 2rem; // Padding de la carte
+
+// Styles de la page
+body {
+  background: linear-gradient(to right, $primary-color, $secondary-color);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+}
+
+// Styles de la carte
+.card {
+  background-color: $card-bg-color;
+  width: 70%;
+  height: 67%;
+  max-width: 980px;
+  box-shadow: 0 4px 6px $shadow-color;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: $card-padding;
+  display: flex;
+  flex-direction: row;
+
+  .card-img {
+    width: 40%;
+    height: auto;
+  }
+
+  .card-body {
+    padding: 1.5rem;
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: $primary-color;
+    }
+
+    .card-text {
+      margin-top: 1rem;
+      line-height: 1.6;
+      color: darken($primary-color, 20%);
+    }
+
+    .text-body-secondary {
+      font-size: 0.85rem;
+      color: lighten($primary-color, 20%);
+    }
+  }
+}

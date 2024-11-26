@@ -1,0 +1,131 @@
+<div class="container h-100 mt-3">
+    <div class="row">
+        <div  class="col-lg-4 d-block justify-content-center shadow p-3 mb-5 bg-body-tertiary rounded">
+            <img th:src="${user.picture}" th:if="${newProfilePicture == null}" height="100" width="100" class="img-responsive rounded-circle  decalage-gauche" />
+            <img th:if="${newProfilePicture != null}" th:src="${newProfilePicture}" height="100" width="100" class="img-responsive rounded-circle  decalage-gauche" />
+            <h2 class="text-center mt-2" th:text="${user.username}"></h2>
+            <p class="text-center">
+                Welcome , Here you can save any of your data
+                with Full security
+            </p>
+            <div class="d-flex justify-content-center  ">
+                <a th:href="@{/settings}" class="btn btn-warning ms-3">Settings</a>
+                <button class="btn btn-outline-primary ms-3" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Account</button>
+            </div>
+        </div>
+        <div  class="col-md-7 ms-5 d-block justify-content-center shadow p-3 mb-5 bg-body-tertiary rounded">
+            <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Full Name</h6>
+                </div>
+                <div class="col-sm-9 text-secondary" th:text=" ${fullName}">
+                 
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Email</h6>
+                </div>
+                <div class="col-sm-9 text-secondary" th:text=" ${user.email}">
+                  fip@jukmuh.al
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Genre</h6>
+                </div>
+                <div class="col-sm-9 text-secondary" th:text="${user.genre}">
+                  male
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">First Login Date</h6>
+                </div>
+                <div class="col-sm-9 text-secondary" th:text="${formattedCreatedAt}">
+                  (320) 380-4539
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Authority</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  USER
+                </div>
+              </div>
+             
+          </div>
+        </div>
+        <div class="row ms-3">
+          <!-- houni ne9ess el path juste kol wehed yzid el path mte3ou-->
+          <div  class="col-md-3 me-3 d-block justify-content-center shadow p-3 mb-5 bg-body-tertiary rounded">
+            <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info me-2">Features</i>List</h6>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <a  th:href="@{/documents}" class="text-decoration-none"><h6 class="mb-0"><i class="fa-regular fa-folder-open me-1"></i>Documents</h6></a>
+                <span class="text-secondary">/documents</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <h6 class="mb-0"><i class="fa-solid fa-id-card me-1"></i>Accounts</h6>
+                <span class="text-secondary">/accounts</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <h6 class="mb-0"><i class="fa-solid fa-clipboard-list me-1"></i>Jobs</h6>
+                <span class="text-secondary">/jobs</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <h6 class="mb-0"><i class="fa-solid fa-note-sticky me-1"></i>Notes</h6>
+                <span class="text-secondary">/notes</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <h6 class="mb-0"><i class="fa-solid fa-key me-1"></i>passwords</h6>
+                <span class="text-secondary">/passwords</span>
+              </li>
+            </ul>
+            <!-- end -->
+          </div>
+          <div  class="col-md-4 me-3 d-block justify-content-center shadow p-3 mb-5 bg-body-tertiary rounded">
+            <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info me-2">Accounts</i>Details</h6>
+          </div>
+          <div  class="col-md-4 d-block justify-content-center shadow p-3 mb-5 bg-body-tertiary rounded">
+            <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info me-2">Notes</i>Details sorted</h6>
+          </div>
+        </div>
+    </div>
+  <!--Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"> <i class="fa-solid text-danger fa-circle-exclamation"></i> Hi Mr(e) <span th:text="${user.username}" class="title"></span></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       Are you sure that you want to Delete Your Account?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+        <a  th:href="@{/delete}" class="btn btn-warning text-decoration-none">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script th:if="${param.pic}">
+  
+  setTimeout(function() {
+    var currentUrl = window.location.href;
+    var newUrl = currentUrl.replace(/([&\?])pic=true/, '');
+    window.history.replaceState(null, null, newUrl);
+    window.location.reload();
+}, 500);
+  
+  
+
+</script>
+

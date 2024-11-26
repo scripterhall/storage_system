@@ -34,3 +34,6 @@ build/
 
 ### NODE MODULES ###
 node_modules
+
+### pictures content ###
+src/main/resources/static/pictures/**

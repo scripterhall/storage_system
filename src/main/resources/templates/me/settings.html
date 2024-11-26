@@ -1,0 +1,86 @@
+<div class="container justify-content-center align-items-center h-100 ">
+    <div class="row h-100 ">
+        <div class="col-md-3 degradation shadow p-3 mb-5 bg-body-tertiary rounded">
+            <h4 class="title text-light p-2">
+                <i class="fa-solid fa-gear me-2"></i>Settings
+            </h4>
+        </div>
+        <div class="col-md-8 shadow p-3 mb-5 bg-body-tertiary rounded">
+            <div class="container-fluid">
+                <h5 class="d-flex align-items-center mb-3 text-primary"> Your Profile Settings</h5>
+                <br>
+                <form th:action="@{/settings}" class="row g-3" method="post" th:object="${user}">
+                    <div class="col-md-6">
+                      <label for="inputEmail4" class="form-label">Email</label>
+                      <input type="email" th:field="${user.email}" class="form-control" id="inputEmail4">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputUsername" class="form-label">Username</label>
+                      <input type="text" class="form-control" th:field="${user.username}" id="inputUsername">
+                    </div>
+                    <div class="col-12">
+                      <label for="GivenNameInput" class="form-label">Given Name</label>
+                      <input type="text" class="form-control" th:field="${user.givenName}" id="GivenNameInput" placeholder="nour">
+                    </div>
+                    <div class="col-12">
+                      <label for="familyNameInput" class="form-label">Family Name</label>
+                      <input type="text" class="form-control" th:field="${user.familyName}" id="familyNameInput" placeholder="ben aziir">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                      <label for="inputState" class="form-label">Genre</label>
+                      <select id="inputState" class="form-select" name="genre">
+                        <option value="male" th:selected="${user.genre == 'male'}">Male</option>
+                        <option value="female" th:selected="${user.genre == 'female'}">Female</option>
+                    </select>
+                    </div>
+                    <input type="hidden" id="id" th:field="*{id}">
+                    <div class="col-12">
+                      <button type="submit" class="btn btn-primary float-end">Update</button>
+                    </div>
+                  </form>
+                  <br>
+                  <hr class="mb-5 border-3">
+                  <!-- profile picture Settings-->
+                    <h5 class="d-flex align-items-center mt-4 text-primary ">Profile picture</h5>
+                    <br>
+                    <div class="col-md-12">
+                        <form class="justify-content-between d-flex align-items-center" th:action="@{/avatar}" method="post" enctype="multipart/form-data">
+                            <img th:src="${user.picture}" class="img-thumbnail rounded-circle img-fluid" alt="Profile picture" width="100" height="100">
+                            <input type="file" id="profilePicture" name="profilePicture" required class="form-control w-50" >
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </form>
+                    </div>
+                    <br>
+                    <hr class="mb-5 border-3">
+                  <!--  end of the profile picture settings -->
+                  <h5 class="d-flex align-items-center mt-4 text-primary "> Password change</h5>
+                  <br>
+                  <form th:action="@{/cred}" class="row g-3" method="post" th:object="${passwordChanger}">
+                    <div class="mb-3">
+                        <label for="currentPass" class="form-label">Current password</label>
+                        <input type="password" th:field="${passwordChanger.currentPassword}" required  class="form-control w-75" id="currentPass" placeholder="**********">
+                      </div>
+                      <div class="mb-3">
+                        <label for="newPass" class="form-label">New password</label>
+                        <input type="password" th:field="${passwordChanger.newPassword}" required class="form-control w-75" id="newPass" placeholder="**********">
+                      </div>
+                      <div class="mb-3">
+                        <label for="comfirmPass" class="form-label">Confirm password</label>
+                        <input type="password" th:field="${passwordChanger.comfirmPassword}" required class="form-control w-75" id="comfirmPass" placeholder="**********">
+                      </div>
+                      <div class="col-12">
+                        <button type="submit" class="btn btn-primary float-end">Update Password</button>
+                      </div>
+                    </form>
+                    <div th:if="${param.error}" class="mt-4 alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Erreur :</strong> <p th:text="${param.error}"></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <div th:if="${param.success}" class="mt-4 alert  alert-success alert-dismissible fade show" role="alert">
+                        <strong>Erreur :</strong> <p th:text="${param.success}"></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
