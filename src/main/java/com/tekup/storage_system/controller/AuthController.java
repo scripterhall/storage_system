@@ -1,9 +1,11 @@
 package com.tekup.storage_system.controller;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,12 @@ public class AuthController {
 
     @GetMapping("/login")
     public String loginPage() {
+        return "auth/login";
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public String handleInvalidPasswordException(AuthenticationException ex, Model model) {
+        model.addAttribute("error", "Invalid password !");
         return "auth/login";
     }
 

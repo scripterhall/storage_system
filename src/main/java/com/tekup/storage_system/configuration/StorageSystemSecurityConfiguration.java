@@ -52,7 +52,9 @@ public class StorageSystemSecurityConfiguration {
                                 .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure()) // Assurez-vous que les //
                                                                                              // requêtes utilisent
                                 .authorizeHttpRequests(requests -> requests
-                                                .requestMatchers("/home", "/me", "/settings").hasRole("USER")
+                                                .requestMatchers("/home", "/me", "/settings", "/cred", "/avatar",
+                                                                "/delete")
+                                                .hasRole("USER")
                                                 .requestMatchers("/error", "/invalidSession", "/auth/**",
                                                                 "/css/**", "/js/**",
                                                                 "/pictures/**", "/favicon.ico", "/images/**",

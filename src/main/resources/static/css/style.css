@@ -19,11 +19,10 @@
 }
 
 .navbar-sticky {
-  background: #f0f0f0;
-  position: fixed;
-  width: 100%;
+  background: #fff;
   opacity: 0.9;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  width: 100%;
 }
 
 .to-top-btn {
@@ -62,4 +61,11 @@
   .navbar .btn-outline-secondary {
     margin-top: 20px;
   }
+}
+.decalage-gauche {
+  margin-left: 16vh;
+}
+
+.degradation {
+  background: linear-gradient(to right, #d7da3b, rgba(65, 225, 253, 0.831372549));
 }

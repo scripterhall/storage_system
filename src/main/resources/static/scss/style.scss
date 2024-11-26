@@ -27,11 +27,10 @@ $secondary-color: #41e1fdd4;
   }
   
   .navbar-sticky {
-    background: #f0f0f0;
-    position: fixed;
-    width: 100%;
+    background: #fff;
     opacity: 0.9;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 100%;
   }
   
 
@@ -79,5 +78,13 @@ $secondary-color: #41e1fdd4;
         margin-top: 20px;
       }
     }
+  }
+
+  .decalage-gauche{
+    margin-left: 16vh;
+  }
+
+  .degradation{
+    background: linear-gradient(to right, $primary-color, $secondary-color);
   }
   
