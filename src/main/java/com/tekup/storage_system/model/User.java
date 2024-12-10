@@ -1,6 +1,7 @@
 package com.tekup.storage_system.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -55,4 +56,7 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Authority> authorities;
+
+    @OneToMany(mappedBy = "user")
+    private ArrayList<Account> accounts;
 }
