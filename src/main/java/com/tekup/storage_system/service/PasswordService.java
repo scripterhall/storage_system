@@ -1,6 +1,6 @@
 package com.tekup.storage_system.service;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +13,8 @@ public class PasswordService {
     @Autowired
     PasswordRepository passwordRepository;
 
-    public ArrayList<Password> getAllPasswords() {
-        return new ArrayList<>(passwordRepository.findAll());
+    public List<Password> getAllPasswords() {
+        return passwordRepository.findAll();
     }
 
     public Password getPasswordById(long id) {
@@ -26,10 +26,13 @@ public class PasswordService {
     }
 
     public Password updatePassword(Password a) {
+        if (!a.equals(passwordRepository.findById(a.getId()).get()))
         return passwordRepository.saveAndFlush(a);
+    else
+        return a;
     }
 
     public void deletePassword(long id) {
-        passwordRepository.deleteById(id);
+        passwordRepository.delete(passwordRepository.findById(id).get());
     }
 }

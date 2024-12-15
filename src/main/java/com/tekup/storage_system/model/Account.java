@@ -1,7 +1,8 @@
 package com.tekup.storage_system.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,6 +39,8 @@ public class Account {
     @ManyToOne
     private User user;
 
-    @OneToMany(mappedBy = "account")
-    private ArrayList<Password> passwords;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = false)
+    private List<Password> passwords;
+
+    private String note;
 }

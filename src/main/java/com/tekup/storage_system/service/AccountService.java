@@ -1,6 +1,6 @@
 package com.tekup.storage_system.service;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +13,8 @@ public class AccountService {
     @Autowired
     AccountRepository accountRepository;
 
-    public ArrayList<Account> getAllAccounts() {
-        return new ArrayList<>(accountRepository.findAll());
+    public List<Account> getAllAccountsByIdUser(Long userId) {
+        return accountRepository.findByUserId(userId);
     }
 
     public Account getAccountById(long id) {
