@@ -55,4 +55,8 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Authority> authorities;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Note> notes;
+
 }
