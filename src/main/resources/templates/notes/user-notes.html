@@ -1,0 +1,208 @@
+<link rel="stylesheet" href="/css/user-notes.css">
+
+<div id="rappelMessageContainer" class="rappel-message" th:if="${rappelMessage != null and rappelMessage != ''}">
+    <i class="fas fa-bell" style="color:green; font-size: 20px"></i>
+    &nbsp;<span th:text="${rappelMessage}"></span>
+    <span id="closeButton" class="closeButton" onclick="closeRappelMessage()">×</span>
+</div>
+
+
+
+
+<script>
+    var rappelMessageContainer = document.getElementById('rappelMessageContainer');
+    var closeButton = document.getElementById('closeButton');
+
+    if (rappelMessageContainer) {
+        function toggleRappelMessage() {
+            rappelMessageContainer.style.display = 'block';
+
+            setTimeout(function() {
+                rappelMessageContainer.style.display = 'none';
+            }, 12000);
+        }
+
+        function closeRappelMessage() {
+            rappelMessageContainer.style.display = 'none';
+        }
+
+        setInterval(toggleRappelMessage, 3600000);
+
+        toggleRappelMessage();
+    }
+</script>
+
+
+<div class="page-container">
+    <div class="filter-section">
+        <div class="filter-header">
+            <span class="filter-title">Filter by</span>
+            <button class="close-btn close-filter" id="closeFilterWindow">×</button>
+        </div>
+        <hr class="filter-separator">
+        <div class="filter-header">
+            <span class="classement">Sort by category </span>
+        </div>
+        <div class="categories-container">
+            <button class="category-btn" th:each="category : ${T(com.tekup.storage_system.model.Categorie).values()}"
+                    th:text="${category.name()}"></button>
+        </div>
+        <hr class="filter-separator">
+        <div class="filter-header">
+            <span class="classement">Importance<br>
+                <span class="importance-description">Show only important notes</span>
+            </span>
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <hr class="filter-separator">
+        <div class="filter-header">
+            <span class="classement">Reminder<br>
+                <span class="importance-description">Show only notes with active reminder</span>
+            </span>
+            <label class="switch">
+                <input type="checkbox" id="reminderCheckbox">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <hr class="filter-separator">
+        <div class="button-container">
+            <button class="btn reset-btn">Reset Choices</button>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="page-title-container">
+            <div class="page-title">
+                <i class="fa-solid fa-note-sticky" id="iconeNotes"></i> My Notes
+            </div>
+            <button id="addNoteButton"><i class="fa-solid fa-plus"></i> Add Note</button>
+        </div>
+
+        <div class="filter-buttons">
+            <button id="showAllNotesButton" class="filter-btn selected" onclick="window.location.href='/notes?archived=false'">
+                Show All
+            </button>
+            <button id="showArchivedNotesButton" class="filter-btn deselected" onclick="window.location.href='/notes?archived=true'">
+                Archived
+            </button>
+            <button id="filterByButton" class="filter-btn filter-by-btn">
+                <span id="showFilter">Filter by</span>
+            </button>
+        </div>
+        <div class="post-it-container" id="notesContainer">
+            <div th:each="note : ${notes}" class="post-it"
+                 th:class="'post-it ' + ${note.categorie.name().toLowerCase()}"
+                 th:attr="data-archived=${note.archived},data-rappelActive=${note.rappelActive},data-category=${note.categorie.name().toUpperCase()}">
+                <div class="pin"></div>
+                <div class="post-it-icon-title">
+        <span th:if="${note.getCategorie().name() == 'WORK'}">
+            <div class="post-it-icon">💼</div>
+        </span>
+                    <span th:if="${note.getCategorie().name() == 'PERSONAL'}">
+            <div class="post-it-icon">🧑‍💼</div>
+        </span>
+                    <span th:if="${note.getCategorie().name() == 'EDUCATION'}">
+            <div class="post-it-icon">📚</div>
+        </span>
+                    <span th:if="${note.getCategorie().name() == 'HEALTH'}">
+            <div class="post-it-icon">🩺</div>
+        </span>
+                    <span th:if="${note.getCategorie().name() == 'FINANCE'}">
+            <div class="post-it-icon">💰</div>
+        </span>
+                    <span th:if="${note.getCategorie().name() == 'TRAVEL'}">
+            <div class="post-it-icon">✈️</div>
+        </span>
+                    <span th:if="${note.getCategorie().name() == 'OTHERS'}">
+            <div class="post-it-icon">📋</div>
+        </span>
+                    <div class="post-it-title" th:text="${note.objet}"></div>
+                    <span class="star" th:if="${note.important}">⭐</span>
+                </div>
+                <div class="post-it-content" th:text="${note.description}">Description de la note</div>
+                <div class="post-it-date-category">
+                    <div class="post-it-date">
+                        <i class="fa fa-calendar"></i>
+                        <span th:text="${note.dateCreationFormatted}">Date de création</span>
+                    </div>
+                    <div class="post-it-category" th:text="${note.categorie}">Catégorie</div>
+                </div>
+                <div class="overlay">
+                    <form th:action="@{/notes/archive/{noteId}(noteId=${note.id})}" method="post" th:if="${!note.archived}">
+                        <button type="submit" class="btn btn-danger">Archive</button>
+                    </form>
+                    <form th:action="@{/notes/archive/{noteId}(noteId=${note.id})}" method="post" th:if="${note.archived}">
+                        <button type="submit" class="btn btn-primary">Restore</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="addNoteModal" class="modal">
+    <div class="modal-content">
+        <h2 class="titreModal">Add New Note</h2>
+        <span class="close-btn" onclick="closeModal()">×</span>
+
+        <form th:action="@{/notes/add}" method="post">
+            <div>
+                <div>
+                    <label for="objet">Title:</label>
+                    <input type="text" id="objet" name="objet" required>
+                    <div id="objetError" class="error-message" style="display: none; color: red;">This field is required.</div>
+                </div>
+
+                <div>
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" rows="3" required></textarea>
+                    <div id="descriptionError" class="error-message" style="display: none; color: red;">This field is required.</div>
+                </div>
+
+            </div>
+            <div class="inline-checkboxes">
+                <label for="categorie">Categorie:</label>
+                <select id="categorie" name="categorie" required>
+                    <option value="WORK">Work</option>
+                    <option value="PERSONAL">Personal</option>
+                    <option value="EDUCATION">Education</option>
+                    <option value="HEALTH">Health</option>
+                    <option value="FINANCE">Finance</option>
+                    <option value="TRAVEL">Travel</option>
+                    <option value="OTHERS">Others</option>
+                </select>
+                <div id="categorieError" class="error-message" style="display: none; color: red;">This field is required.</div>
+
+                <label for="important">Important:</label>
+                <div class="checkbox-wrapper-new">
+                    <input type="checkbox" id="important" name="important" />
+                    <label for="important" class="toggle-new"><span></span></label>
+                </div>
+
+
+            </div>
+
+            <div class="inline-btn">
+                <label for="rappelActive">I want to be reminded</label>
+                <div class="checkbox-wrapper-31">
+                    <input type="checkbox" id="rappelActive" name="rappelActive"/>
+                    <svg viewBox="0 0 35.6 35.6">
+                        <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
+                        <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
+                        <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
+                    </svg>
+                </div>
+            </div>
+            <div id="rappelDateContainer" style="display: none;">
+                <label for="rappelDate">On:</label>
+                <input type="datetime-local" id="rappelDate" name="rappelDate">
+            </div>
+            <button type="submit" class="saveBtn">Save Note</button>
+        </form>
+    </div>
+</div>
+
+
+<script src="/js/user-notes.js"></script>
