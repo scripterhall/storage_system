@@ -58,6 +58,11 @@ public class User {
     @JsonIgnore
     private Set<Authority> authorities;
 
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Account> accounts;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Note> notes;
+
 }

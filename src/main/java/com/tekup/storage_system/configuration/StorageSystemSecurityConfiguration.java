@@ -51,16 +51,15 @@ public class StorageSystemSecurityConfiguration {
                                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                                 .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure()) // Assurez-vous que les //
                                                                                              // requêtes utilisent
-                                .authorizeHttpRequests(requests -> requests
-                                                .requestMatchers("/home", "/me", "/settings", "/cred", "/avatar",
-                                                                "/delete", "/accounts/**",
-                                                                "accountpassrest/**")
-                                                .hasRole("USER")
-                                                .requestMatchers("/error", "/invalidSession", "/auth/**",
-                                                                "/css/**", "/js/**",
-                                                                "/pictures/**", "/favicon.ico", "/images/**",
-                                                                "/webfonts/**")
-                                                .permitAll());
+
+
+                        .authorizeHttpRequests(requests -> requests
+                                .requestMatchers("/home", "/me", "/settings", "/cred", "/avatar", "/delete", "/notes",
+                                        "/my-notes", "/notes/*","/accounts/**","accountpassrest/**").hasRole("USER")
+                                .requestMatchers("/error", "/invalidSession", "/auth/**", "/css/**", "/js/**",
+                                        "/pictures/**", "/favicon.ico", "/images/**", "/webfonts/**").permitAll()
+                                );
+
 
                 // Configurer le formulaire de connexion
                 http.formLogin(form -> form
