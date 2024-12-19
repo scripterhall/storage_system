@@ -1,6 +1,7 @@
 package com.tekup.storage_system.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.SQLRestriction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -55,6 +57,10 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Authority> authorities;
+
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Account> accounts;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Note> notes;
