@@ -55,9 +55,10 @@ public class StorageSystemSecurityConfiguration {
 
                         .authorizeHttpRequests(requests -> requests
                                 .requestMatchers("/home", "/me", "/settings", "/cred", "/avatar", "/delete", "/notes",
-                                        "/my-notes", "/notes/*","/accounts/**","accountpassrest/**").hasRole("USER")
+                                        "/my-notes", "/notes/**","/accounts/**","accountpassrest/**").hasRole("USER")
                                 .requestMatchers("/error", "/invalidSession", "/auth/**", "/css/**", "/js/**",
                                         "/pictures/**", "/favicon.ico", "/images/**", "/webfonts/**").permitAll()
+                                        
                                 );
 
 
