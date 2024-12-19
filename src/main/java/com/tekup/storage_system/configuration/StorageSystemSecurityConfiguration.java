@@ -53,11 +53,11 @@ public class StorageSystemSecurityConfiguration {
                                                                                              // requêtes utilisent
                                 .authorizeHttpRequests(requests -> requests
                                                 .requestMatchers("/home", "/me", "/settings", "/cred", "/avatar",
-                                                                "/delete")
+                                                                "/delete","/upload","/Files" ,"/newFolder","/folders","/delete","/rename")
                                                 .hasRole("USER")
-                                                .requestMatchers("/error", "/invalidSession", "/auth/**",
+                                                .requestMatchers("/uploads/**","/error", "/invalidSession", "/auth/**",
                                                                 "/css/**", "/js/**",
-                                                                "/pictures/**", "/favicon.ico", "/images/**",
+                                                                "/pictures/**", "/favicon.ico", "/images/**","/uploads/",
                                                                 "/webfonts/**")
                                                 .permitAll());
 
