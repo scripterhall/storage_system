@@ -53,7 +53,7 @@ public class StorageSystemSecurityConfiguration {
                                                                                              // requêtes utilisent
                                 .authorizeHttpRequests(requests -> requests
                                                 .requestMatchers("/home", "/me", "/settings", "/cred", "/avatar",
-                                                                "/delete")
+                                                                "/delete","/templates/**","/instances/**")
                                                 .hasRole("USER")
                                                 .requestMatchers("/error", "/invalidSession", "/auth/**",
                                                                 "/css/**", "/js/**",

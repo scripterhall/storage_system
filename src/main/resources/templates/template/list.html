@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Liste des Templates</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/css/fontawesome.css}">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body {
+            background-color: #f0f8ff;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+            margin-top: 20px;
+            display: block;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        .card-head {
+            font-size: 1.5em;
+            color: #34495e;
+            margin-bottom: 10px;
+        }
+
+        .card-body {
+            background-color: #ffffff;
+            padding: 15px;
+        }
+
+        .field {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            color: #2980b9;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="date"], input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            background-color: #ecf0f1;
+            color: #34495e;
+            font-size: 1rem;
+        }
+
+        input[type="text"]:disabled, input[type="date"]:disabled, input[type="file"]:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .btn-add-template {
+            background-color: #e67e22;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            margin-top: 30px;
+            display: block;
+            width: 200px;
+            margin: 0 auto;
+        }
+
+        .btn-add-template:hover {
+            background-color: #d35400;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Template List</h1>
+
+<!-- Button to create new template -->
+<a class="btn-add-template" href="/templates/new">Add Template</a>
+
+<div class="container" style="display:flex;justify-content: space-between;flex-wrap: wrap;">
+    <!-- Loop through templates and fields -->
+    <div style="margin-right: 10px;" th:each="entry : ${fieldsList}">
+        <div class="card">
+            <!-- Loop through each template and display fields dynamically -->
+            <div class="card-head" style="display: flex;">
+                <h1>
+                    Template: <span th:text="${templates[entry.key].title}"></span>
+                </h1>
+                <a class="btn-add-template" style="width:min-content !important;height: min-content;" th:href="@{/instances/{key}(key=${templates[entry.key].id})}">
+                    <i class="fas fa-plus-circle"></i>
+                </a>
+            </div>
+            <div class="card-body">
+                <div th:each="field : ${entry.value}">
+                    <div class="field">
+                        <label th:text="${field.label}"></label>
+                        <!-- Dynamically create input fields based on type -->
+                        <input th:if="${field.type == 'TEXT'}" type="text" th:value="${field.value}" disabled />
+                        <input th:if="${field.type == 'DATE'}" type="date" th:value="${field.value}" disabled />
+                        <input th:if="${field.type == 'FILE'}" type="file" disabled />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
