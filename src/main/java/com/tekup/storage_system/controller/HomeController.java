@@ -23,4 +23,6 @@ public class HomeController {
         model.addAttribute("content", "home");
         return "base";
     }
+
+
 }
