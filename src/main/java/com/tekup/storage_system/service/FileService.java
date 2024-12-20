@@ -110,6 +110,14 @@ public class FileService {
         file.setRenamedFile(newName);
         fileRepository.save(file);
     }
+    public void changeFolder(Long idfolder, Long IdFile) {
+        Folder folder;
+        File file = fileRepository.findById(IdFile).orElseThrow(() -> new IllegalArgumentException("File not found"));
+         folder = folderRepository.findById(idfolder) .orElseThrow(() -> new IllegalArgumentException("Dossier non trouvé"));
+        file.setFolder(folder);
+        file.setPath("/uploads/" + folder.getName() + "/" + file.getName());
+        fileRepository.save(file);
+    }
 
 
 }
