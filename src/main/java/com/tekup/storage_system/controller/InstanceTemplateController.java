@@ -1,27 +1,38 @@
 package com.tekup.storage_system.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tekup.storage_system.model.*;
-import com.tekup.storage_system.service.InstanceTemplateService;
-import com.tekup.storage_system.service.TemplateService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.*;
-import java.util.stream.IntStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tekup.storage_system.model.EnumFieldType;
+import com.tekup.storage_system.model.FieldTypeTO;
+import com.tekup.storage_system.model.InstanceTemplate;
+import com.tekup.storage_system.model.InstanceTemplateTO;
+import com.tekup.storage_system.model.Template;
+import com.tekup.storage_system.model.TemplateTO;
+import com.tekup.storage_system.service.InstanceTemplateService;
+import com.tekup.storage_system.service.TemplateService;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
@@ -67,6 +78,7 @@ public class InstanceTemplateController {
                     InstanceTemplateTO instanceTemplateTO = new InstanceTemplateTO();
                     instanceTemplateTO.setFields(fields);
                     instanceTemplateTO.setTemplate(template);
+                    instanceTemplateTO.setId(instance.getId());
                     instanceTemplateTOs.add(instanceTemplateTO);
                 }
 
@@ -75,7 +87,10 @@ public class InstanceTemplateController {
                 model.addAttribute("templateFields", templateTO.getFields());
                 model.addAttribute("templateId", template.getId());
                 model.addAttribute("instances", instanceTemplateTOs);
-                return "instanceTemplate/list";
+                model.addAttribute("content", "instanceTemplate/list");
+                model.addAttribute("user", userController.getCurrentUser(authentication));
+
+                return "base";
             } catch (IOException e) {
                 e.printStackTrace(); // Handle error while deserializing
             }
@@ -106,7 +121,10 @@ public class InstanceTemplateController {
 
             model.addAttribute("instanceTemplate", instanceTemplate);
             model.addAttribute("fields", templateFields);
-            return "instanceTemplate/form"; // Render the "template/newInstance.html" page
+            model.addAttribute("content", "instanceTemplate/form");
+            model.addAttribute("user", userController.getCurrentUser(authentication));
+
+            return "base"; // Render the "template/newInstance.html" page
         }
         return "redirect:/error";
     }
@@ -136,7 +154,7 @@ public class InstanceTemplateController {
 
                         if (!file.isEmpty()) {
                             // Get the original filename
-                            String filename = file.getOriginalFilename();
+                            String filename = file.getOriginalFilename().replaceAll("[^a-zA-Z0-9\\.\\-]", "_");
                             Path targetLocation = Paths.get(uploadDir).resolve(filename);
 
                             // Save the file to the upload directory
@@ -155,6 +173,17 @@ public class InstanceTemplateController {
                 e.printStackTrace();
                 return "redirect:/error";
             }
+        }
+        return "redirect:/error";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteInstanceTemplate(Authentication authentication, @PathVariable Long id) {
+        Optional<InstanceTemplate> instanceTemplateOptional = instanceTemplateService.getInstanceTemplateById(id);
+        if (instanceTemplateOptional.isPresent()) {
+            Long templateId = instanceTemplateOptional.get().getTemplate().getId();
+            instanceTemplateService.deleteInstanceTemplate(id);
+            return "redirect:/instances/" + templateId;
         }
         return "redirect:/error";
     }

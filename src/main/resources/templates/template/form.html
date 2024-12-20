@@ -104,7 +104,7 @@
             background-color: #d35400;
         }
 
-        .container {
+        .myContainer {
             max-width: 800px;
             margin: 0 auto;
             padding: 30px;
@@ -135,7 +135,7 @@
 <body>
 
 <h1>Create or Modify Template</h1>
-<div class="container">
+<div class="myContainer">
     <form th:action="@{/templates}" method="post">
         <!-- Template Title -->
         <div>
@@ -164,6 +164,7 @@
                     <label>
                         Label: <input type="text" th:name="'fields[' + ${iterStat.index} + '].label'" placeholder="Label" required />
                     </label>
+                    <input type="hidden" th:name="'fields[' + ${iterStat.index} + '].value'" placeholder="Label" required />
                 </div>
                 <button type="button"
                         th:data-container-id="'container-' + ${iterStat.index}"

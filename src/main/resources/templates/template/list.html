@@ -78,7 +78,7 @@
             cursor: not-allowed;
         }
 
-        .container {
+        .myContainer {
             max-width: 1200px;
             margin: 0 auto;
             padding: 30px;
@@ -108,7 +108,7 @@
 <!-- Button to create new template -->
 <a class="btn-add-template" href="/templates/new">Add Template</a>
 
-<div class="container" style="display:flex;justify-content: space-between;flex-wrap: wrap;">
+<div class="myContainer" style="display:flex;justify-content: space-between;flex-wrap: wrap;">
     <!-- Loop through templates and fields -->
     <div style="margin-right: 10px;" th:each="entry : ${fieldsList}">
         <div class="card">
@@ -120,17 +120,27 @@
                 <a class="btn-add-template" style="width:min-content !important;height: min-content;" th:href="@{/instances/{key}(key=${templates[entry.key].id})}">
                     <i class="fas fa-plus-circle"></i>
                 </a>
+                <a class="btn-add-template" style="margin-left:5px;width:min-content !important;height: min-content;" th:href="@{/templates/delete/{key}(key=${templates[entry.key].id})}">
+                    <i class="fas fa-trash"></i>
+                </a>
             </div>
             <div class="card-body">
+                <table style="width: 50%;">
                 <div th:each="field : ${entry.value}">
                     <div class="field">
-                        <label th:text="${field.label}"></label>
-                        <!-- Dynamically create input fields based on type -->
-                        <input th:if="${field.type == 'TEXT'}" type="text" th:value="${field.value}" disabled />
-                        <input th:if="${field.type == 'DATE'}" type="date" th:value="${field.value}" disabled />
-                        <input th:if="${field.type == 'FILE'}" type="file" disabled />
+                        <tr style="margin-bottom: 10px;">
+                            <td>Label: </td>
+                            <td>
+                                <label th:text="${field.label}"></label>
+                            </td>
+                            <tr>
+                            <td> Type: </td>
+                               <td> <label th:text="${field.type}"></label>
+                            </td>
+                        </tr>
                     </div>
                 </div>
+                </table>
             </div>
         </div>
     </div>

@@ -17,7 +17,7 @@
             margin-top: 50px;
         }
 
-        .container {
+        .myContainer {
             max-width: 1000px;
             margin: 0 auto;
             padding: 30px;
@@ -50,7 +50,7 @@
             margin-bottom: 5px;
         }
 
-        .field input[type="text"] {
+        .field input{
             width: 100%;
             padding: 10px;
             margin-top: 5px;
@@ -71,7 +71,7 @@
 
 <h1>Create Instance for Template: <span th:text="${instanceTemplate.template.title}"></span></h1>
 
-<div class="container">
+<div class="myContainer">
     <form th:action="@{/instances/new/{templateId}(templateId=${instanceTemplate.template.id})}" method="post"  enctype="multipart/form-data">
         <div th:each="field, iterStat : ${fields}">
             <div class="field">

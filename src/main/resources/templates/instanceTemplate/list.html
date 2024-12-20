@@ -17,7 +17,7 @@
             margin-top: 50px;
         }
 
-        .container {
+        .myContainer {
             max-width: 1000px;
             margin: 0 auto;
             padding: 30px;
@@ -94,28 +94,42 @@
     Add New Instance
 </a>
 
-<div class="container">
+<div class="myContainer">
     <!-- Loop through the instances -->
     <div th:each="instance : ${instances}">
         <div class="card">
             <div class="card-head">
+                <a class="btn-add-template" style="margin-left:5px;width:min-content !important;height: min-content;float: right;" th:href="@{/instances/delete/{key}(key=${instance.id})}">
+                    <i class="fas fa-trash"></i>
+                </a>
                 <h2>Instance of Template: <span th:text="${instance.template.title}"></span></h2>
             </div>
             <div class="card-body">
                 <!-- Loop through the fields of the instance -->
+                 <table style="width: 50%;">
                 <div th:each="field,i : ${instance.fields}">
-                    <div th:switch="${templateFields[i.index].type}">
-                        <div th:case="'file'">
+                    <div th:if="${templateFields[i.index].type == 'file'}">
+                        <tr>
                             <!-- If the field is of type 'file', display the image -->
-                            <img th:src="@{/pictures/{filename}(filename=${field.value})}" alt="Uploaded File"
-                                 style="max-width: 200px; max-height: 200px;"/>
-                        </div>
-                        <div th:case="'default'" class="field">
-                            <!--<label th:text="${template.fields[${i.count}].label}"></label>-->
-                            <input type="text" th:value="${field.value}" disabled/>
-                        </div>
+                             <td>
+                                <label th:text="${template.fields[i.index].label}"></label>
+                             </td>
+                            <td><img th:src="@{/pictures/{filename}(filename=${field.value})}" alt="Uploaded File"
+                                 style="max-width: 200px; max-height: 200px;"/></td>
+                                 </tr>
+                    </div>
+                    <div th:if="${templateFields[i.index].type != 'file'}">
+                            <tr>
+                                <td>
+                                    <label th:text="${template.fields[i.index].label}"></label>
+                                </td>
+                                <td>                            
+                                    <input type="${template.fields[i.index].type}" th:value="${field.value}" disabled/>
+                                </td>
+                            </tr>
                     </div>
                 </div>
+                </table>
             </div>
         </div>
     </div>

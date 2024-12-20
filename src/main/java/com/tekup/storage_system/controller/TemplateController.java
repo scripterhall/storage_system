@@ -1,23 +1,35 @@
 package com.tekup.storage_system.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tekup.storage_system.model.*;
-import com.tekup.storage_system.service.InstanceTemplateService;
-import com.tekup.storage_system.service.TemplateService;
-import com.tekup.storage_system.service.UserService;
-import lombok.RequiredArgsConstructor;
-import org.hibernate.type.descriptor.jdbc.JsonAsStringJdbcType;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.IntStream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.IntStream;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tekup.storage_system.model.EnumFieldType;
+import com.tekup.storage_system.model.FieldTypeTO;
+import com.tekup.storage_system.model.InstanceTemplate;
+import com.tekup.storage_system.model.Template;
+import com.tekup.storage_system.model.TemplateTO;
+import com.tekup.storage_system.service.InstanceTemplateService;
+import com.tekup.storage_system.service.TemplateService;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
@@ -50,14 +62,18 @@ public class TemplateController {
 
         model.addAttribute("fieldsList", fieldsList);
         model.addAttribute("templates", templates);
-        return "template/list";
+        model.addAttribute("content", "template/list");
+        model.addAttribute("user", userController.getCurrentUser(authentication));
+        return "base";
     }
 
     @GetMapping("/new")
-    public String showCreateForm(Model model) {
-        model.addAttribute("template", new Template());
+    public String showCreateForm(Authentication authentication, Model model) {
+        model.addAttribute("template", new TemplateTO());
         model.addAttribute("fieldTypes", EnumFieldType.values());
-        return "template/form";
+        model.addAttribute("content", "template/form");
+        model.addAttribute("user", userController.getCurrentUser(authentication));
+        return "base";
     }
 
     @PostMapping
@@ -87,17 +103,25 @@ public class TemplateController {
         return "redirect:/templates";
     }
 
+    @DeleteMapping("/delete/{id}")
+    public String deleteTemplate(Authentication authentication, @PathVariable Long id) {
+        templateService.deleteTemplate(id);
+        return "redirect:/templates";
+    }
 
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
+    public String showEditForm(Authentication authentication, @PathVariable Long id, Model model) {
         Template template = templateService.getTemplateById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Template introuvable avec l'ID : " + id));
         model.addAttribute("template", template);
-        return "template/form"; // Vue : src/main/resources/templates/template/form.html
+        model.addAttribute("content", "template/form");
+        model.addAttribute("user", userController.getCurrentUser(authentication));
+        return "base"; // Vue : src/main/resources/templates/template/form.html
     }
 
     @PostMapping("/update/{id}")
-    public String updateTemplate(@PathVariable Long id, @ModelAttribute("template") Template updatedTemplate) {
+    public String updateTemplate(Authentication authentication, @PathVariable Long id,
+            @ModelAttribute("template") Template updatedTemplate) {
         Template existingTemplate = templateService.getTemplateById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Template with ID : " + id + " does not exist."));
 
@@ -129,8 +153,10 @@ public class TemplateController {
 
             model.addAttribute("template", template);
             model.addAttribute("instances", instances);
+            model.addAttribute("content", "instanceTemplate/list");
+            model.addAttribute("user", userController.getCurrentUser(authentication));
 
-            return "instanceTemplate/list";
+            return "base";
         }
         return "redirect:/error";
     }
