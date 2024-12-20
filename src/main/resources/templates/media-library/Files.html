@@ -133,7 +133,7 @@
                                 </button>
                             </li>
                             <li>
-                                <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#moveModal" th:data-bs-id="${file}"  onclick="setMoveFileId(this)">
+                                <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#moveModal" th:data-bs-id="${file.id}"  >
                                     <i class="fa fa-arrows-alt"></i> Move
                                 </button>
                             </li>
@@ -275,12 +275,17 @@ document.getElementById('uploadFile').addEventListener('click', function() {
     });
 </script>
 <script>
-    function setMoveFileId(button) {
-        // Récupère l'attribut data-file-id du bouton cliqué
-        const fileId = button.getAttribute('data-file-id');
-        // Met à jour la valeur de l'input caché dans le modal
-        document.getElementById('moveFileId').value = fileId;
-    }
+    var moveModal = document.getElementById('moveModal');
+    moveModal.addEventListener('shown.bs.modal', function (event) {
+        // Récupère le bouton qui a déclenché l'ouverture du modal
+        var button = event.relatedTarget;
+
+        var fileId = button.getAttribute('data-bs-id');
+
+        // Remplit le champ d'entrée #moveFileId dans le modal
+        var fileIdInput = moveModal.querySelector('#moveFileId');
+        fileIdInput.value = fileId;
+    });
 </script>
 
 <script>

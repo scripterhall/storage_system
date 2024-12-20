@@ -65,6 +65,4 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Note> notes;
 
-    @OneToMany(mappedBy = "user")
-    private List<Template> templateList;
 }
