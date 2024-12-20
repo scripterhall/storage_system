@@ -1,0 +1,246 @@
+<!-- Create Button to Trigger Modal -->
+<button
+  class="btn btn-success mb-3"
+  data-bs-toggle="modal"
+  data-bs-target="#accountModal"
+>
+  <i class="fas fa-plus"></i> Create Account
+</button>
+<div class="d-flex justify-content-center flex-wrap">
+  <div class="position-relative m-2" th:each="account : ${accounts}">
+    <div class="card animate__animated animate__bounce" style="width: 18rem">
+      <div class="card-body">
+        <h5 class="card-title ms-1" th:text="${account.linkSite}"></h5>
+        <p class="card-text mb-5 ms-1" th:text="${account.emailUsed}"></p>
+        <p th:if="${not #lists.isEmpty(account.passwords)}">
+          <strong>Password:</strong>
+          <span
+            th:text="${account.passwords[0].value}"
+            name="passwordText"
+          ></span>
+        </p>
+
+        <a
+          class="btn btn-primary mb-1 mt-1"
+          th:href="@{/accounts/{id}(id=${account.id})}"
+          >Details</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="accountModal"
+  tabindex="-1"
+  aria-labelledby="accountModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-account" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="accountModalLabel">Create Account</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form th:action="@{/accounts/save}" th:object="${account}" method="post">
+        <div class="modal-body">
+          <!-- Link Site -->
+          <div class="form-group">
+            <label for="linkSite">Link Site</label>
+            <input
+              type="text"
+              class="form-control"
+              id="linkSite"
+              name="linkSite"
+              th:field="*{linkSite}"
+              required
+            />
+          </div>
+
+          <!-- Username -->
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              class="form-control"
+              id="username"
+              name="username"
+              th:field="*{username}"
+              required
+            />
+          </div>
+
+          <!-- Email Used -->
+          <div class="form-group">
+            <label for="emailUsed">Email Used</label>
+            <input
+              type="email"
+              class="form-control"
+              id="emailUsed"
+              name="emailUsed"
+              th:field="*{emailUsed}"
+              required
+            />
+          </div>
+
+          <!-- Note -->
+          <div class="form-group">
+            <label for="note">Note</label>
+            <textarea
+              class="form-control"
+              id="note"
+              name="note"
+              th:field="*{note}"
+            ></textarea>
+          </div>
+
+          <!-- Passwords -->
+          <div class="form-group">
+            <label>Passwords</label>
+            <div id="passwordContainer">
+              <!-- Existing Passwords -->
+              <div
+                th:each="password, stat : ${account.passwords}"
+                class="password-item d-flex mb-2"
+              >
+                <input
+                  type="password"
+                  class="form-control me-2"
+                  th:field="*{passwords[${stat.index}].value}"
+                  placeholder="Password"
+                />
+                <input
+                  type="checkbox"
+                  class="form-check-input me-2"
+                  th:field="*{passwords[${stat.index}].active}"
+                />
+                <label class="form-check-label">Active</label>
+                <button type="button" class="btn btn-danger remove-password">
+                  Remove
+                </button>
+              </div>
+            </div>
+            <button
+              type="button"
+              class="btn btn-secondary mt-2"
+              id="addPasswordBtn"
+            >
+              Add Password
+            </button>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const passwordContainer = document.getElementById("passwordContainer");
+    const addPasswordBtn = document.getElementById("addPasswordBtn");
+
+    // Track the current index for dynamically added passwords
+    let passwordIndex = 0;
+
+    // Add new password field with a checkbox
+    addPasswordBtn.addEventListener("click", function () {
+      // Create a new div for the password input, checkbox, and remove button
+      const passwordDiv = document.createElement("div");
+      passwordDiv.classList.add(
+        "password-item",
+        "d-flex",
+        "align-items-center",
+        "mb-2"
+      );
+
+      // Create the password input field
+      const input = document.createElement("input");
+      input.type = "password";
+      input.name = `passwords[${passwordIndex}].value`; // Use the current index
+      const xhr = new XMLHttpRequest();
+      xhr.open(
+        "GET",
+        "http://localhost:8085/accountpassrest/generatepassword",
+        false
+      );
+
+      try {
+        xhr.send();
+        if (xhr.status === 200) {
+          const password = xhr.responseText;
+          input.placeholder = xhr.responseText;
+        } else {
+          console.error(`Error: HTTP status ${xhr.status}`);
+          input.placeholder = "Password";
+        }
+      } catch (error) {
+        console.error("Error fetching the password:", error);
+      }
+
+      input.classList.add("form-control", "me-2");
+
+      // Create the checkbox
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.name = `passwords[${passwordIndex}].active`; // Correct field name
+      checkbox.classList.add("form-check-input", "me-2");
+
+      // Create the checkbox label
+      const checkboxLabel = document.createElement("label");
+      checkboxLabel.classList.add("form-check-label");
+      checkboxLabel.textContent = "Active";
+
+      // Create the remove button
+      const removeBtn = document.createElement("button");
+      removeBtn.type = "button";
+      removeBtn.classList.add("btn", "btn-danger", "ms-2", "remove-password");
+      removeBtn.textContent = "Remove";
+
+      // Append the input, checkbox, label, and remove button to the password div
+      passwordDiv.appendChild(input);
+      passwordDiv.appendChild(checkbox);
+      passwordDiv.appendChild(checkboxLabel);
+      passwordDiv.appendChild(removeBtn);
+
+      // Add the password div to the container
+      passwordContainer.appendChild(passwordDiv);
+
+      // Attach event listener to remove button
+      removeBtn.addEventListener("click", function () {
+        passwordDiv.remove();
+      });
+
+      // Increment the password index for the next added password
+      passwordIndex++;
+    });
+
+    // Event delegation for existing "Remove" buttons
+    passwordContainer.addEventListener("click", function (event) {
+      if (event.target.classList.contains("remove-password")) {
+        event.target.parentElement.remove();
+      }
+    });
+    const passwordInputs = document.getElementsByName("passwordText");
+    passwordInputs.forEach((span) => {
+      const originalText = span.textContent; // Get original password text
+      span.textContent = "•".repeat(originalText.length); // Mask the password with black circles
+    });
+  });
+</script>
