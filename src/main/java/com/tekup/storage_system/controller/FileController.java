@@ -124,6 +124,21 @@ public class FileController {
         return "redirect:/Files";
     }
 
+    @PostMapping("/move")
+    public String moveFile(
+            @RequestParam("fileId") Long fileId,
+            @RequestParam("targetFolderId") Long targetFolderId,
+            RedirectAttributes redirectAttributes) {
+        try {
+
+            fileService.changeFolder(targetFolderId, fileId);
+            redirectAttributes.addFlashAttribute("successMessage", "File moved successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error moving file: " + e.getMessage());
+        }
+        return "redirect:/Files";
+    }
+
     @PostMapping("/newFolder")
     public String createFolder(@RequestParam("folderName")   String folderName,Authentication authentication,
                                RedirectAttributes redirectAttributes) {
@@ -145,6 +160,4 @@ public class FileController {
         fileService.renameFile(id,fileRename);
         return "redirect:/Files";  // Redirect after deletion
     }
-
-
 }
