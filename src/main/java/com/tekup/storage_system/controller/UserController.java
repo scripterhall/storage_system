@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,7 +32,6 @@ public class UserController {
         String formattedCreatedAt = user.getCreatedAt() != null
                 ? user.getCreatedAt().toLocalDate().toString()
                 : "Date not available";
-        System.out.println("tesssttt:::" + user);
         model.addAttribute("formattedCreatedAt", formattedCreatedAt);
         model.addAttribute("user", user);
         model.addAttribute("pageTitle", "profile");

@@ -1,0 +1,34 @@
+.footer {
+    background: linear-gradient(135deg, #4b4b4b, #a0a0a0);
+    margin-top: 5%;
+}
+
+.footer h6 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.footer p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #ffffff;
+}
+
+.social-icons a {
+    transition: transform 0.3s ease-in-out, color 0.3s ease;
+}
+
+.social-icons a:hover {
+    transform: scale(1.1);
+    color: #f1c40f;
+}
+
+footer a {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+footer a:hover {
+    color: #f1c40f;
+}

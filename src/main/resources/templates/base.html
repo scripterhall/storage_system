@@ -7,8 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
     />
     <!-- CSS Bootstrap -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
@@ -18,25 +18,25 @@
     <link rel="stylesheet" th:href="@{/css/fontawesome.css}">
 </head>
 <body>
-    <!-- Header -->
-    <header th:insert="~{fragments/header}"></header>
-    
-    <div class="d-flex">
-        <!-- Contenu principal -->
-        <main class="flex-grow-1 p-4" style="min-height:700px;">
-            <div th:insert="${content}"></div>
-        </main>
-    </div>
+<!-- Header -->
+<header th:insert="~{fragments/header}"></header>
 
-    <!-- Footer -->
-    <footer th:insert="~{fragments/footer}"></footer>
+<div class="d-flex">
+    <!-- Contenu principal -->
+    <main class="flex-grow-1 p-4" style="min-height:700px;">
+        <div th:insert="${content}"></div>
+    </main>
+</div>
 
-    <button id="to-top" class="to-top-btn">
-        <img src="/images/up-arrow.png" alt="" />
-      </button>
-    <!-- JavaScript Bootstrap -->
-    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-    <!-- Votre JavaScript -->
-    <script th:src="@{/js/script.js}"></script>
+<!-- Footer -->
+<footer th:insert="~{fragments/footer}"></footer>
+
+<button id="to-top" class="to-top-btn">
+    <img src="/images/up-arrow.png" alt="" />
+</button>
+<!-- JavaScript Bootstrap -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!-- Votre JavaScript -->
+<script th:src="@{/js/script.js}"></script>
 </body>
 </html>
