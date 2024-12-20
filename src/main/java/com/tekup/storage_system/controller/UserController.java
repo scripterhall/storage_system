@@ -97,4 +97,8 @@ public class UserController {
         userService.delete(userService.getUserByUsername(authentication.getName()).getId());
         return "redirect:/auth/logout";
     }
+
+    public User getCurrentUser(Authentication authentication) {
+        return userService.getUserByUsername(authentication.getName());
+    }
 }

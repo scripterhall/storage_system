@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create or Modify Template</title>
+    <script>
+        // Toggle the visibility of inputs for each checkbox
+        function toggleInputs(checkbox, containerId) {
+            const container = document.getElementById(containerId);
+            if (container) {
+                container.style.display = checkbox.checked ? 'block' : 'none';
+            } else {
+                console.warn(`Container with ID '${containerId}' not found.`);
+            }
+        }
+
+        // Add a new field dynamically based on the selected type
+        function addField(button) {
+            const containerId = button.getAttribute('data-container-id');
+            const container = document.getElementById(containerId);
+            const fieldType = button.getAttribute('data-field-type'); // Get the selected field type
+
+            if (container) {
+                const fieldContainers = document.querySelectorAll('.field-container');
+                let visibleFieldContainers = 0;
+                fieldContainers.forEach(field => {
+                    // Check if the parent element (or any ancestor) has `display: none`
+                    let parent = field.parentElement;
+                    if (parent && getComputedStyle(parent).display !== 'none') {
+                        visibleFieldContainers++;
+                    }
+                });
+                const fieldIndex = visibleFieldContainers;
+
+                const newField = document.createElement('div');
+                newField.classList.add('field-container');
+
+                let fieldHtml = `
+                    <label>
+                        Label: <input type="text" name="fields[${fieldIndex}].label" placeholder="Label" required />
+                    </label>
+                    <input type="hidden" name="fields[${fieldIndex}].type" value="${fieldType}" />
+                    <input type="hidden" name="fields[${fieldIndex}].value" value="" />`;
+
+                newField.innerHTML = fieldHtml;
+                container.insertBefore(newField, button);
+            } else {
+                console.warn(`Container with ID '${containerId}' not found.`);
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f0f8ff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        h2 {
+            color: #34495e;
+            font-size: 1.5rem;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+
+        label {
+            display: block;
+            color: #2980b9;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"], input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            background-color: #ecf0f1;
+            color: #34495e;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: #e67e22;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin-top: 15px;
+            width: 100%;
+            cursor: pointer;
+            border: none;
+        }
+
+        button:hover {
+            background-color: #d35400;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .field-container {
+            margin-top: 20px;
+        }
+
+        .field-container input {
+            margin-bottom: 10px;
+        }
+
+        #submit {
+            background-color: #2ecc71;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        #submit:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Create or Modify Template</h1>
+<div class="container">
+    <form th:action="@{/templates}" method="post">
+        <!-- Template Title -->
+        <div>
+            <label for="title">Template Title:</label>
+            <input type="text" id="title" name="title" th:value="${template.title}" required />
+        </div>
+
+        <!-- Fields Section -->
+        <h2>Add Fields to the Template:</h2>
+        <div th:each="fieldType, iterStat : ${fieldTypes}">
+            <div>
+                <!-- Checkbox for the Field Type -->
+                <label>
+                    <input type="checkbox"
+                           th:name="'fields[' + ${iterStat.index} + '].type'"
+                           th:value="${fieldType.name()}"
+                           th:id="'field-' + ${iterStat.index}"
+                           th:onclick="'toggleInputs(this, \'container-' + ${iterStat.index} + '\')'" />
+                    <span th:text="${fieldType.name()}"></span>
+                </label>
+            </div>
+
+            <!-- Hidden Container for Dynamic Inputs -->
+            <div th:id="'container-' + ${iterStat.index}" style="display: none;" data-index="${iterStat.index}">
+                <div class="field-container">
+                    <label>
+                        Label: <input type="text" th:name="'fields[' + ${iterStat.index} + '].label'" placeholder="Label" required />
+                    </label>
+                </div>
+                <button type="button"
+                        th:data-container-id="'container-' + ${iterStat.index}"
+                        th:data-field-type="${fieldType.name()}"
+                        th:onclick="|addField(this)|">
+                    Add Another
+                </button>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button id="submit" type="submit">Save Template</button>
+    </form>
+</div>
+<script>
+    // Ensure that no hidden fields are sent when the form is submitted
+    document.getElementById("submit").addEventListener("click", function removeUnusedInputs() {
+        const inputDivs = document.getElementsByTagName("div");
+        Array.from(inputDivs).forEach(inputDiv => {
+            if (window.getComputedStyle(inputDiv).display === "none") {
+                inputDiv.remove();
+            }
+        });
+    });
+</script>
+</body>
+</html>
